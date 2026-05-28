@@ -1,0 +1,259 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلة في مصر مع سيمون</title>
+    <link rel="icon" href="https://i.postimg.cc/d0Pfc81d/Logo.jpg" type="image/png">  
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="https://i.postimg.cc/d0Pfc81d/Logo.jpg" alt="Logo" class="logo-img">
+                <span class="logo-text">رحلة في مصر</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#about">نبذة عنا</a></li>
+                <li><a href="#tours">الجولات</a></li>
+                <li><a href="#gallery">المعرض</a></li>
+                <li><a href="#testimonials">آراء العملاء</a></li>
+                <li><a href="#contact">اتصل بنا</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">اكتشف جمال مصر</h1>
+            <p class="hero-subtitle">مع مرشدة سياحية وممثلة محترفة، رحلة لا تُنسى في قلب التاريخ والثقافة المصرية</p>
+            <button class="cta-button" onclick="scrollToSection('contact')">احجز رحلتك الآن</button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">نبذة عنا</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>مرحبا بكم في رحلة في مصر</h3>
+                    <p>أنا سيمون، مرشدة سياحية وممثلة مصرية محترفة. شغفي هو إظهار جمال مصر الحقيقي من خلال عيون فنانة. أقدم تجارب سياحية فريدة تمزج بين التاريخ العريق والثقافة المعاصرة والفن المصري الأصيل.</p>
+                    <p>مع أكثر من 10 سنوات من الخبرة في مجال السياحة والفن، أضمن لك رحلة مميزة مليئة بالقصص والحكايات التي ستجعل من زيارتك لمصر تجربة لا تُنسى.</p>
+                    <div class="achievements">
+                        <div class="achievement">
+                            <i class="fas fa-smile"></i>
+                            <span>1000+ عميل سعيد</span>
+                        </div>
+                        <div class="achievement">
+                            <i class="fas fa-film"></i>
+                            <span>15+ عمل فني</span>
+                        </div>
+                        <div class="achievement">
+                            <i class="fas fa-flag-checkered"></i>
+                            <span>50+ جولة سياحية</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://i.postimg.cc/vZ9PhczH/Simoon.jpg" alt="مرشدة سياحية سيمون">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tours Section -->
+    <section id="tours" class="tours">
+        <div class="container">
+            <h2 class="section-title">الجولات السياحية</h2>
+            <div class="tours-grid">
+                <div class="tour-card">
+                    <div class="tour-image">
+                        <img src="https://i.postimg.cc/4dWVP5tg/GEM.jpg" alt="الأهرامات">
+                    </div>
+                    <div class="tour-info">
+                        <h3>جولة الأهرامات وأبو الهول</h3>
+                        <p>استكشف عجائب الدنيا السبع القديمة مع شرح مفصل عن تاريخ وحضارة الفراعنة</p>
+                        <div class="tour-details">
+                            <span><i class="fas fa-clock"></i> 4 ساعات</span>
+                            <span><i class="fas fa-users"></i> 2-10 أشخاص</span>
+                            <span><i class="fas fa-dollar-sign"></i> 50$</span>
+                        </div>
+                        <button class="book-btn" onclick="openBookingModal('جولة الأهرامات وأبو الهول')">احجز الآن</button>
+                    </div>
+                </div>
+                <div class="tour-card">
+                    <div class="tour-image">
+                        <img src="https://i.postimg.cc/hjS7TCDB/nhr-alnyl.jpg" alt="النيل">
+                    </div>
+                    <div class="tour-info">
+                        <h3>رحلة النيل الخيالية</h3>
+                        <p>عشاء رومانسي على ظهر مركب تقليدي مع موسيقى حية وعروض فنية</p>
+                        <div class="tour-details">
+                            <span><i class="fas fa-clock"></i> 3 ساعات</span>
+                            <span><i class="fas fa-users"></i> 2-15 أشخاص</span>
+                            <span><i class="fas fa-dollar-sign"></i> 75$</span>
+                        </div>
+                        <button class="book-btn" onclick="openBookingModal('رحلة النيل الخيالية')">احجز الآن</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2 class="section-title">ملف أعمال المرشدة السياحية</h2>
+            <div class="portfolio-content">
+                <div class="portfolio-text">
+                    <h3>سيمون اسحاق - مرشدة سياحية وممثلة</h3>
+                    <h4>جوائز وتكريمات:</h4>
+                    <ul>
+                        <li>تكريم من وزارة السياحة المصرية</li>
+                    </ul>
+                </div>
+                <div class="portfolio-gallery">
+                    <img src="https://i.postimg.cc/YS1LV5nj/5.jpg" alt="عمل فني 1">
+                    <img src="https://i.postimg.cc/GtS4Gd2x/6.jpg" alt="عمل فني 2">
+                    <img src="https://i.postimg.cc/yYkgBgQ2/7.jpg" alt="عمل فني 3">
+                    <img src="https://i.postimg.cc/HsVcHcvm/8.jpg" alt="عمل فني 4">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <h2 class="section-title">معرض الصور</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://i.postimg.cc/XJGm4g5k/1.jpg" alt="معرض 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.postimg.cc/Bb2z1QNY/2.jpg" alt="معرض 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.postimg.cc/jjWZ7SSk/3.jpg" alt="معرض 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.postimg.cc/FK2GgXfF/4.jpg" alt="معرض 4">
+                </div>
+        </div>
+    </section>
+    
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title">آراء العملاء</h2>
+            <div class="testimonials-empty">
+                <i class="fas fa-star-of-life"></i>
+                <h3>لا توجد تقييمات بعد</h3>
+                <p>كن أول من يقيّم تجربته معنا!</p>
+                <a href="rank.html" class="rate-btn">أضف تقييمك الآن</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">اتصل بنا</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>معلومات الاتصال</h3>
+                    <a href="01229971386"><i class="fas fa-phone">تليفون</i></a>
+                    <br>
+                    <a href="test@gamil.com"><i class="fas fa-envelope">البريد الالكتروني</i></a>
+                    <br>
+                    <a href="https://wa.me/+201229971386"><i class="fab fa-whatsapp">الواتساب</i></a>
+                        <br>
+                        <a href="https://www.facebook.com/simoon.issac"><i class="fab fa-facebook">فيسبوك</i></a>
+                </div>
+                <form id="bookingForm" class="booking-form">
+                    <h3>احجز رحلتك الآن</h3>
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="الاسم الكامل" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="phone" placeholder="رقم الهاتف" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="tour" required>
+                            <option value="">اختر الجولة</option>
+                            <option>جولة المتحف المصري الكبير</option>
+                            <option>رحلة النيل</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" rows="4" placeholder="رسالتك"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">إرسال طلب الحجز</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/201234567890" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>تأكيد الحجز</h2>
+            <form id="modalBookingForm">
+                <div class="form-group">
+                    <input type="text" id="modalName" placeholder="الاسم الكامل" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="modalEmail" placeholder="البريد الإلكتروني" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="modalPhone" placeholder="رقم الهاتف" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="modalTour" readonly>
+                </div>
+                <div class="form-group">
+                    <input type="date" id="modalDate" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="modalMessage" rows="3" placeholder="رسالتك"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">تأكيد الحجز</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 رحلة في مصر مع سيمون. جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

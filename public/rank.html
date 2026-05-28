@@ -1,0 +1,193 @@
+<!-- public/rank.html -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التقييمات - رحلة في مصر مع سيمون</title>
+    <link rel="icon" href="https://i.postimg.cc/d0Pfc81d/Logo.jpg" type="image/png">
+    <style>
+      /* Add to styles.css for admin rankings */
+.rankings-management {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.section-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ffd700;
+}
+
+.section-header h2 {
+    color: #2c1810;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rankings-admin-container {
+    display: grid;
+    gap: 1rem;
+}
+
+.ranking-admin-card {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid #eee;
+}
+
+.ranking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.ranking-header strong {
+    font-size: 1.1rem;
+    color: #2c1810;
+}
+
+.ranking-header .country {
+    font-size: 0.8rem;
+    color: #666;
+    margin-right: 0.5rem;
+}
+
+.rating-stars {
+    color: #ffd700;
+}
+
+.ranking-message-admin {
+    margin: 0.8rem 0;
+    padding: 0.5rem;
+    background: #fff;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+.ranking-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.delete-ranking-btn {
+    background: #f44336;
+    color: #fff;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.delete-ranking-btn:hover {
+    opacity: 0.8;
+}
+
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="rank-page">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="https://i.postimg.cc/d0Pfc81d/Logo.jpg" alt="Logo" class="logo-img">
+                <span class="logo-text">رحلة في مصر</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home">الرئيسية</a></li>
+                <li><a href="index.html#about">نبذة عنا</a></li>
+                <li><a href="index.html#tours">الجولات</a></li>
+                <li><a href="index.html#gallery">المعرض</a></li>
+                <li><a href="rank.html">التقييمات</a></li>
+                <li><a href="index.html#contact">اتصل بنا</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Rank Section - Add Rating -->
+    <section class="rank-section">
+        <div class="container">
+            <h2 class="section-title">أضف تقييمك</h2>
+            <div class="rank-card">
+                <form id="rankForm" class="rank-form">
+                    <div class="form-group">
+                        <label for="rankName">الاسم الكامل</label>
+                        <input type="text" id="rankName" placeholder="أدخل اسمك" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rankCountry">الدولة</label>
+                        <input type="text" id="rankCountry" placeholder="مثال: مصر، السعودية، إنجلترا" required>
+                    </div>
+                    <div class="form-group">
+                        <label>تقييمك</label>
+                        <div class="rating-input">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" id="rankRating" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rankMessage">رسالتك</label>
+                        <textarea id="rankMessage" rows="4" placeholder="شاركنا تجربتك مع رحلة في مصر..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">إرسال التقييم</button>
+                </form>
+                <div id="rankMessageSuccess" class="success-message" style="display: none;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Display All Rankings -->
+    <section class="rankings-section">
+        <div class="container">
+            <h2 class="section-title">آراء عملائنا</h2>
+            <div class="rankings-filter">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="5">★★★★★ (5)</button>
+                <button class="filter-btn" data-filter="4">★★★★☆ (4)</button>
+                <button class="filter-btn" data-filter="3">★★★☆☆ (3)</button>
+            </div>
+            <div class="rankings-grid" id="rankingsGrid">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i> جاري تحميل التقييمات...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 رحلة في مصر مع سيمون. جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <script src="rank.js"></script>
+</body>
+</html>
