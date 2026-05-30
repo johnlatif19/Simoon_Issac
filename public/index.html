@@ -1279,29 +1279,39 @@
 
     // Smooth Scroll for all anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) target.scrollIntoView({ behavior: 'smooth' }); }); });
-    // ============= LOAD TOURS FROM API =============
+  // ============= LOAD TOURS FROM API =============
   async function loadToursFromAPI() {
     const container = document.getElementById('toursContainer');
-    if (!container) return;
+    if (!container) {
+      console.error('toursContainer not found');
+      return;
+    }
     
     try {
+      console.log('Fetching tours from API...');
       const response = await fetch('/api/tours');
-      const tours = await response.json();
       
-      if (tours.length === 0) {
-        container.innerHTML = '<div style="text-align:center; width:100%;">📭 لا توجد جولات حالياً، سيتم إضافتها قريباً</div>';
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const tours = await response.json();
+      console.log('Tours loaded:', tours);
+      
+      if (!tours || tours.length === 0) {
+        container.innerHTML = '<div style="text-align:center; width:100%; padding: 3rem;"><i class="fas fa-info-circle"></i> 📭 لا توجد جولات حالياً، سيتم إضافتها قريباً</div>';
         return;
       }
       
       container.innerHTML = tours.map(tour => `
         <div class="tour-card reveal">
           <div class="tour-image">
-            <img src="${tour.image}" alt="${tour.name}" loading="lazy">
+            <img src="${escapeHtml(tour.image)}" alt="${escapeHtml(tour.name)}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'">
             <div class="tour-badge">${tour.days} أيام</div>
           </div>
           <div class="tour-info">
-            <h3>${tour.name}</h3>
-            <p>${tour.description.substring(0, 80)}${tour.description.length > 80 ? '...' : ''}</p>
+            <h3>${escapeHtml(tour.name)}</h3>
+            <p>${escapeHtml(tour.description.substring(0, 80))}${tour.description.length > 80 ? '...' : ''}</p>
             <div class="tour-details">
               <span><i class="fas fa-calendar-week"></i> ${tour.days} أيام</span>
               <span><i class="fas fa-users"></i> جولات جماعية</span>
@@ -1310,15 +1320,37 @@
               <span><i class="fas fa-dollar-sign"></i> الأجنبي: ${tour.priceForeign}$</span>
               <span><i class="fas fa-pound-sign"></i> المصري: ${tour.priceEgyptian} جنيه</span>
             </div>
-            <button class="book-btn" onclick="openBookingModalWithTour('${tour.id}', '${tour.name.replace(/'/g, "\\'")}')" data-key="book_btn">احجز الآن</button>
+            <button class="book-btn" onclick="openBookingModalWithTour('${tour.id}', '${escapeHtml(tour.name).replace(/'/g, "\\'")}')" data-key="book_btn">احجز الآن</button>
           </div>
         </div>
       `).join('');
       
+      // Re-trigger reveal animations for new elements
+      const newRevealElements = document.querySelectorAll('.reveal:not(.active)');
+      newRevealElements.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const revealTop = el.getBoundingClientRect().top;
+        const revealPoint = 150;
+        if (revealTop < windowHeight - revealPoint) {
+          el.classList.add('active');
+        }
+      });
+      
     } catch (error) {
       console.error('Error loading tours:', error);
-      container.innerHTML = '<div style="text-align:center; width:100%;">❌ حدث خطأ في تحميل الجولات</div>';
+      container.innerHTML = '<div style="text-align:center; width:100%; padding: 3rem; color: #f44336;"><i class="fas fa-exclamation-triangle"></i> ❌ حدث خطأ في تحميل الجولات. تأكد من تشغيل السيرفر.</div>';
     }
+  }
+  
+  // Escape HTML function
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
   }
   
   // Updated booking modal function to work with tour ID
@@ -1326,26 +1358,58 @@
     const modal = document.getElementById('bookingModal');
     if (modal) {
       document.getElementById('modalTour').value = tourName;
-      document.getElementById('modalTourId').value = tourId;
+      // Add or update hidden tourId field
+      let tourIdField = document.getElementById('modalTourId');
+      if (!tourIdField) {
+        tourIdField = document.createElement('input');
+        tourIdField.type = 'hidden';
+        tourIdField.id = 'modalTourId';
+        modal.querySelector('form').appendChild(tourIdField);
+      }
+      tourIdField.value = tourId;
       modal.style.display = 'block';
     }
   };
   
-  // Update booking form submission to send tourId
-  const originalModalSubmit = modalBookingForm?.submit;
+  // Remove old modal submit listener and add new one
+  const modalBookingForm = document.getElementById('modalBookingForm');
   if (modalBookingForm) {
-    modalBookingForm.addEventListener('submit', async (e) => {
+    // Remove existing listeners by replacing the form
+    const newModalForm = modalBookingForm.cloneNode(true);
+    modalBookingForm.parentNode.replaceChild(newModalForm, modalBookingForm);
+    
+    newModalForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      const submitBtn = newModalForm.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'جاري المعالجة...';
+      
       const nationality = document.getElementById('modalNationality')?.value;
       const persons = parseInt(document.getElementById('modalPersons')?.value) || 1;
       const tourName = document.getElementById('modalTour')?.value;
-      const tourId = document.getElementById('modalTourId')?.value;
+      const tourIdField = document.getElementById('modalTourId');
+      const tourId = tourIdField ? tourIdField.value : null;
       
-      // Get prices from API or use default
+      if (!tourId && !tourName) {
+        alert('❌ حدث خطأ: لم يتم تحديد الرحلة');
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        return;
+      }
+      
+      if (!nationality) {
+        alert('❌ الرجاء اختيار الجنسية');
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        return;
+      }
+      
       let pricePerPerson = nationality === 'egyptian' ? 2500 : 50;
       let currency = nationality === 'egyptian' ? 'EGP' : 'USD';
       
-      // Try to get tour price from loaded tours
+      // Try to get tour price from API
       try {
         const res = await fetch('/api/tours');
         const tours = await res.json();
@@ -1353,7 +1417,9 @@
         if (tour) {
           pricePerPerson = nationality === 'egyptian' ? tour.priceEgyptian : tour.priceForeign;
         }
-      } catch(e) { console.log('Using default prices'); }
+      } catch(e) {
+        console.log('Using default prices');
+      }
       
       const totalPrice = pricePerPerson * persons;
       
@@ -1371,6 +1437,14 @@
         currency: currency
       };
       
+      // Validate required fields
+      if (!bookingData.name || !bookingData.email || !bookingData.phone || !bookingData.date) {
+        alert('❌ الرجاء تعبئة جميع الحقول المطلوبة');
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        return;
+      }
+      
       try {
         const response = await fetch('/api/bookings', {
           method: 'POST',
@@ -1378,40 +1452,50 @@
           body: JSON.stringify(bookingData)
         });
         
+        const result = await response.json();
+        
         if (response.ok) {
-          alert(`✅ تم تأكيد حجزك! السعر الإجمالي: ${totalPrice} ${currency === 'EGP' ? 'جنيه' : '$'}`);
-          modal.style.display = 'none';
-          modalBookingForm.reset();
+          alert(`✅ تم تأكيد حجزك بنجاح!\n\n📋 تفاصيل الحجز:\n🏝️ الرحلة: ${tourName}\n👥 عدد الأفراد: ${persons}\n💰 السعر الإجمالي: ${totalPrice} ${currency === 'EGP' ? 'جنيه' : '$'}\n\nسنقوم بالتواصل معك قريباً لتأكيد التفاصيل.`);
+          const modal = document.getElementById('bookingModal');
+          if (modal) modal.style.display = 'none';
+          newModalForm.reset();
         } else {
-          alert('❌ حدث خطأ في تأكيد الحجز');
+          alert('❌ حدث خطأ في تأكيد الحجز: ' + (result.error || 'يرجى المحاولة مرة أخرى'));
         }
       } catch(error) {
         console.error('Booking error:', error);
-        alert('❌ حدث خطأ في الاتصال بالخادم');
+        alert('❌ حدث خطأ في الاتصال بالخادم. يرجى التأكد من تشغيل السيرفر والمحاولة مرة أخرى.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
       }
     });
   }
   
-  // Add hidden field for tourId in modal
-  const modalForm = document.querySelector('#bookingForm');
-  if (modalForm) {
+  // Add hidden field for tourId in modal if not exists
+  const modalContentForm = document.querySelector('#bookingModal .modal-content form');
+  if (modalContentForm && !document.getElementById('modalTourId')) {
     const hiddenInput = document.createElement('input');
     hiddenInput.type = 'hidden';
     hiddenInput.id = 'modalTourId';
-    modalForm.appendChild(hiddenInput);
-  } else {
-    // Add to modal content
-    const modalContent = document.querySelector('#bookingModal .modal-content form');
-    if (modalContent && !document.getElementById('modalTourId')) {
-      const hiddenInput = document.createElement('input');
-      hiddenInput.type = 'hidden';
-      hiddenInput.id = 'modalTourId';
-      modalContent.appendChild(hiddenInput);
-    }
+    modalContentForm.appendChild(hiddenInput);
   }
   
-  // Load tours when page loads
-  loadToursFromAPI();
+  // Make sure loadToursFromAPI is called when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, loading tours...');
+    loadToursFromAPI();
+  });
+  
+  // Also call it immediately in case DOMContentLoaded already fired
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadToursFromAPI);
+  } else {
+    loadToursFromAPI();
+  }
+  
+  // Refresh tours when switching to dark mode doesn't affect tours
+  console.log('Main page script loaded successfully');
   </script>
 </body>
 </html>
