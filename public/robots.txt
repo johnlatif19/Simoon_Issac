@@ -1,19 +1,8 @@
-# لجميع محركات البحث
 User-agent: *
 Allow: /
-
-# خريطة الموقع
 Sitemap: https://simoon-issac.vercel.app/sitemap.xml
 
-# منع فهرسة الصفحات الفارغة أو غير المهمة
-Disallow: /rate
-Disallow: /pay
+# منع الصفحات الداخلية من الفهرسة
+Disallow: /login
+Disallow: /dashboard
 Disallow: /api/
-
-# انتظر ثانية بين الزحف لكل صفحة (للسرعة)
-Crawl-delay: 1
-
-# لمحرك Google تحديداً
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0.5
