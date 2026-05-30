@@ -1,8 +1,6 @@
 User-agent: *
 Allow: /
 Sitemap: https://simoon-issac.vercel.app/sitemap.xml
-
-# منع الصفحات الداخلية من الفهرسة
 Disallow: /login
 Disallow: /dashboard
 Disallow: /api/
