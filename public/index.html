@@ -117,12 +117,10 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
     
-    /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--text-secondary); border-radius: 10px; }
     ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 10px; }
     
-    /* Loading State */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -150,7 +148,6 @@
       to { transform: rotate(360deg); }
     }
     
-    /* Navbar */
     .navbar {
       position: fixed;
       top: 0;
@@ -296,7 +293,6 @@
     .nav-toggle.active span:nth-child(2) { opacity: 0; }
     .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
     
-    /* Hero Section Enhanced */
     .hero {
       min-height: 100vh;
       background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
@@ -407,7 +403,6 @@
       box-shadow: 0 15px 30px rgba(0,0,0,0.3);
     }
     
-    /* Container */
     .container {
       max-width: 1400px;
       margin: 0 auto;
@@ -434,7 +429,6 @@
       border-radius: 3px;
     }
     
-    /* About Section Enhanced */
     .about-content {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -503,7 +497,6 @@
       transform: scale(1.02);
     }
     
-    /* Tours Grid Enhanced */
     .tours {
       background: rgba(212, 175, 55, 0.05);
     }
@@ -596,7 +589,6 @@
       transform: scale(0.98);
     }
     
-    /* Portfolio & Gallery */
     .portfolio-content {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -645,7 +637,6 @@
       box-shadow: var(--shadow);
     }
     
-    /* Gallery with Lightbox */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -687,7 +678,6 @@
       opacity: 1;
     }
     
-    /* Lightbox Modal */
     .lightbox {
       display: none;
       position: fixed;
@@ -720,7 +710,6 @@
       cursor: pointer;
     }
     
-    /* Testimonials Enhanced */
     .testimonials-empty {
       text-align: center;
       padding: 4rem 2rem;
@@ -753,7 +742,6 @@
       box-shadow: var(--shadow);
     }
     
-    /* Contact */
     .contact-content {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -842,7 +830,6 @@
       cursor: not-allowed;
     }
     
-    /* WhatsApp Button */
     .whatsapp-btn {
       position: fixed;
       bottom: 30px;
@@ -873,7 +860,6 @@
       transform: scale(1.1);
     }
     
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -910,7 +896,6 @@
       color: #f44336;
     }
     
-    /* Footer */
     footer {
       background: var(--footer-bg);
       color: #fff;
@@ -919,7 +904,6 @@
       margin-top: 2rem;
     }
     
-    /* Scroll Reveal Animation */
     .reveal {
       opacity: 0;
       transform: translateY(30px);
@@ -931,7 +915,6 @@
       transform: translateY(0);
     }
     
-    /* Animations */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -954,7 +937,6 @@
       }
     }
     
-    /* Responsive */
     @media (max-width: 992px) {
       .about-content,
       .portfolio-content,
@@ -1162,7 +1144,24 @@
   
   <a href="https://wa.me/201229971386" class="whatsapp-btn" target="_blank" aria-label="WhatsApp Chat"><i class="fab fa-whatsapp"></i></a>
 
-  <div id="bookingModal" class="modal"><div class="modal-content"><span class="close">&times;</span><h2 data-key="confirm_booking">تأكيد الحجز</h2><form id="modalBookingForm"><div class="form-group"><input type="text" id="modalName" placeholder="الاسم الكامل" required></div><div class="form-group"><input type="email" id="modalEmail" placeholder="البريد الإلكتروني" required></div><div class="form-group"><input type="tel" id="modalPhone" placeholder="رقم الهاتف" required></div><div class="form-group"><input type="text" id="modalTour" readonly></div><div class="form-group"><select id="modalNationality" required><option value="">اختر الجنسية</option><option value="egyptian">عربي</option><option value="foreign">أجنبي</option></select></div><div class="form-group"><input type="number" id="modalPersons" min="1" placeholder="عدد الأفراد" required></div><div class="form-group"><input type="date" id="modalDate" required></div><div class="form-group"><textarea id="modalMessage" rows="3" placeholder="رسالتك"></textarea></div><button type="submit" class="submit-btn" data-key="confirm_btn">تأكيد الحجز</button></form></div></div>
+  <div id="bookingModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 data-key="confirm_booking">تأكيد الحجز</h2>
+      <form id="modalBookingForm">
+        <div class="form-group"><input type="text" id="modalName" placeholder="الاسم الكامل" required></div>
+        <div class="form-group"><input type="email" id="modalEmail" placeholder="البريد الإلكتروني" required></div>
+        <div class="form-group"><input type="tel" id="modalPhone" placeholder="رقم الهاتف" required></div>
+        <div class="form-group"><input type="text" id="modalTour" readonly></div>
+        <input type="hidden" id="modalTourId">
+        <div class="form-group"><select id="modalNationality" required><option value="">اختر الجنسية</option><option value="egyptian">عربي</option><option value="foreign">أجنبي</option></select></div>
+        <div class="form-group"><input type="number" id="modalPersons" min="1" placeholder="عدد الأفراد" required></div>
+        <div class="form-group"><input type="date" id="modalDate" required></div>
+        <div class="form-group"><textarea id="modalMessage" rows="3" placeholder="رسالتك"></textarea></div>
+        <button type="submit" class="submit-btn" data-key="confirm_btn">تأكيد الحجز</button>
+      </form>
+    </div>
+  </div>
 
   <div id="lightbox" class="lightbox" onclick="closeLightbox()"><span class="lightbox-close">&times;</span><img class="lightbox-img" id="lightboxImg" alt=""></div>
 
@@ -1192,35 +1191,17 @@
       if (navToggle) navToggle.classList.remove('active');
     }
 
-    // Tour Prices
-    const tourPricesUSD = { 'جولة المتحف المصري الكبير': 50, 'رحلة النيل': 75 };
-    const tourPricesEGP = { 'جولة المتحف المصري الكبير': 2500, 'رحلة النيل': 3750 };
-
     // Modal
     const modal = document.getElementById('bookingModal');
     const closeBtn = document.querySelector('.close');
-    function openBookingModal(tourName) { if (modal) { document.getElementById('modalTour').value = tourName; modal.style.display = 'block'; } }
+    function openBookingModal(tourName) { 
+      if (modal) { 
+        document.getElementById('modalTour').value = tourName; 
+        modal.style.display = 'block'; 
+      } 
+    }
     if (closeBtn) closeBtn.onclick = () => modal.style.display = 'none';
     window.onclick = (event) => { if (event.target == modal) modal.style.display = 'none'; }
-
-    // Modal Booking Form
-    const modalBookingForm = document.getElementById('modalBookingForm');
-    if (modalBookingForm) {
-      modalBookingForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const nationality = document.getElementById('modalNationality')?.value;
-        const persons = parseInt(document.getElementById('modalPersons')?.value) || 1;
-        const tour = document.getElementById('modalTour')?.value;
-        let totalPrice, currency;
-        if (nationality === 'egyptian') { totalPrice = tourPricesEGP[tour] * persons; currency = 'EGP'; } 
-        else { totalPrice = tourPricesUSD[tour] * persons; currency = 'USD'; }
-        const bookingData = { name: document.getElementById('modalName').value, email: document.getElementById('modalEmail').value, phone: document.getElementById('modalPhone').value, tour, nationality, persons, date: document.getElementById('modalDate').value, message: document.getElementById('modalMessage').value || '', totalPrice, currency };
-        localStorage.setItem('bookingData', JSON.stringify(bookingData));
-        modal.style.display = 'none';
-        alert(`✅ تم تأكيد حجزك! السعر الإجمالي: ${totalPrice} ${currency}`);
-        modalBookingForm.reset();
-      });
-    }
 
     // Contact Form
     const contactForm = document.getElementById('contactForm');
@@ -1279,223 +1260,197 @@
 
     // Smooth Scroll for all anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) target.scrollIntoView({ behavior: 'smooth' }); }); });
-  // ============= LOAD TOURS FROM API =============
-  async function loadToursFromAPI() {
-    const container = document.getElementById('toursContainer');
-    if (!container) {
-      console.error('toursContainer not found');
-      return;
-    }
-    
-    try {
-      console.log('Fetching tours from API...');
-      const response = await fetch('/api/tours');
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const tours = await response.json();
-      console.log('Tours loaded:', tours);
-      
-      if (!tours || tours.length === 0) {
-        container.innerHTML = '<div style="text-align:center; width:100%; padding: 3rem;"><i class="fas fa-info-circle"></i> 📭 لا توجد جولات حالياً، سيتم إضافتها قريباً</div>';
-        return;
-      }
-      
-      container.innerHTML = tours.map(tour => `
-        <div class="tour-card reveal">
-          <div class="tour-image">
-            <img src="${escapeHtml(tour.image)}" alt="${escapeHtml(tour.name)}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'">
-            <div class="tour-badge">${tour.days} أيام</div>
-          </div>
-          <div class="tour-info">
-            <h3>${escapeHtml(tour.name)}</h3>
-            <p>${escapeHtml(tour.description.substring(0, 80))}${tour.description.length > 80 ? '...' : ''}</p>
-            <div class="tour-details">
-              <span><i class="fas fa-calendar-week"></i> ${tour.days} أيام</span>
-              <span><i class="fas fa-users"></i> جولات جماعية</span>
-            </div>
-            <div class="tour-details">
-              <span><i class="fas fa-dollar-sign"></i> الأجنبي: ${tour.priceForeign}$</span>
-              <span><i class="fas fa-pound-sign"></i> المصري: ${tour.priceEgyptian} جنيه</span>
-            </div>
-            <button class="book-btn" onclick="openBookingModalWithTour('${tour.id}', '${escapeHtml(tour.name).replace(/'/g, "\\'")}')" data-key="book_btn">احجز الآن</button>
-          </div>
-        </div>
-      `).join('');
-      
-      // Re-trigger reveal animations for new elements
-      const newRevealElements = document.querySelectorAll('.reveal:not(.active)');
-      newRevealElements.forEach(el => {
-        const windowHeight = window.innerHeight;
-        const revealTop = el.getBoundingClientRect().top;
-        const revealPoint = 150;
-        if (revealTop < windowHeight - revealPoint) {
-          el.classList.add('active');
-        }
+
+    // ============= LOAD TOURS FROM API =============
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
       });
-      
-    } catch (error) {
-      console.error('Error loading tours:', error);
-      container.innerHTML = '<div style="text-align:center; width:100%; padding: 3rem; color: #f44336;"><i class="fas fa-exclamation-triangle"></i> ❌ حدث خطأ في تحميل الجولات. تأكد من تشغيل السيرفر.</div>';
     }
-  }
-  
-  // Escape HTML function
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    });
-  }
-  
-  // Updated booking modal function to work with tour ID
-  window.openBookingModalWithTour = function(tourId, tourName) {
-    const modal = document.getElementById('bookingModal');
-    if (modal) {
-      document.getElementById('modalTour').value = tourName;
-      // Add or update hidden tourId field
-      let tourIdField = document.getElementById('modalTourId');
-      if (!tourIdField) {
-        tourIdField = document.createElement('input');
-        tourIdField.type = 'hidden';
-        tourIdField.id = 'modalTourId';
-        modal.querySelector('form').appendChild(tourIdField);
-      }
-      tourIdField.value = tourId;
-      modal.style.display = 'block';
-    }
-  };
-  
-  // Remove old modal submit listener and add new one
-  const modalBookingForm = document.getElementById('modalBookingForm');
-  if (modalBookingForm) {
-    // Remove existing listeners by replacing the form
-    const newModalForm = modalBookingForm.cloneNode(true);
-    modalBookingForm.parentNode.replaceChild(newModalForm, modalBookingForm);
-    
-    newModalForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const submitBtn = newModalForm.querySelector('.submit-btn');
-      const originalText = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'جاري المعالجة...';
-      
-      const nationality = document.getElementById('modalNationality')?.value;
-      const persons = parseInt(document.getElementById('modalPersons')?.value) || 1;
-      const tourName = document.getElementById('modalTour')?.value;
-      const tourIdField = document.getElementById('modalTourId');
-      const tourId = tourIdField ? tourIdField.value : null;
-      
-      if (!tourId && !tourName) {
-        alert('❌ حدث خطأ: لم يتم تحديد الرحلة');
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+
+    async function loadToursFromAPI() {
+      const container = document.getElementById('toursContainer');
+      if (!container) {
+        console.error('toursContainer not found');
         return;
       }
       
-      if (!nationality) {
-        alert('❌ الرجاء اختيار الجنسية');
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-        return;
-      }
-      
-      let pricePerPerson = nationality === 'egyptian' ? 2500 : 50;
-      let currency = nationality === 'egyptian' ? 'EGP' : 'USD';
-      
-      // Try to get tour price from API
       try {
-        const res = await fetch('/api/tours');
-        const tours = await res.json();
-        const tour = tours.find(t => t.id === tourId || t.name === tourName);
-        if (tour) {
-          pricePerPerson = nationality === 'egyptian' ? tour.priceEgyptian : tour.priceForeign;
+        console.log('Fetching tours from API...');
+        const response = await fetch('/api/tours');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      } catch(e) {
-        console.log('Using default prices');
-      }
-      
-      const totalPrice = pricePerPerson * persons;
-      
-      const bookingData = {
-        tourId: tourId,
-        tourName: tourName,
-        name: document.getElementById('modalName').value,
-        email: document.getElementById('modalEmail').value,
-        phone: document.getElementById('modalPhone').value,
-        nationality: nationality,
-        persons: persons,
-        date: document.getElementById('modalDate').value,
-        message: document.getElementById('modalMessage').value || '',
-        totalPrice: totalPrice,
-        currency: currency
-      };
-      
-      // Validate required fields
-      if (!bookingData.name || !bookingData.email || !bookingData.phone || !bookingData.date) {
-        alert('❌ الرجاء تعبئة جميع الحقول المطلوبة');
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-        return;
-      }
-      
-      try {
-        const response = await fetch('/api/bookings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bookingData)
+        
+        const tours = await response.json();
+        console.log('Tours loaded:', tours);
+        
+        if (!tours || tours.length === 0) {
+          container.innerHTML = '<div style="text-align:center; width:100%; padding: 3rem;"><i class="fas fa-info-circle"></i> 📭 لا توجد جولات حالياً، سيتم إضافتها قريباً</div>';
+          return;
+        }
+        
+        container.innerHTML = tours.map(tour => `
+          <div class="tour-card reveal">
+            <div class="tour-image">
+              <img src="${escapeHtml(tour.image)}" alt="${escapeHtml(tour.name)}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'">
+              <div class="tour-badge">${tour.days} أيام</div>
+            </div>
+            <div class="tour-info">
+              <h3>${escapeHtml(tour.name)}</h3>
+              <p>${escapeHtml(tour.description.substring(0, 80))}${tour.description.length > 80 ? '...' : ''}</p>
+              <div class="tour-details">
+                <span><i class="fas fa-calendar-week"></i> ${tour.days} أيام</span>
+                <span><i class="fas fa-users"></i> جولات جماعية</span>
+              </div>
+              <div class="tour-details">
+                <span><i class="fas fa-dollar-sign"></i> الأجنبي: ${tour.priceForeign}$</span>
+                <span><i class="fas fa-pound-sign"></i> المصري: ${tour.priceEgyptian} جنيه</span>
+              </div>
+              <button class="book-btn" onclick="openBookingModalWithTour('${tour.id}', '${escapeHtml(tour.name).replace(/'/g, "\\'")}')" data-key="book_btn">احجز الآن</button>
+            </div>
+          </div>
+        `).join('');
+        
+        // Re-trigger reveal animations for new elements
+        const newRevealElements = document.querySelectorAll('.reveal:not(.active)');
+        newRevealElements.forEach(el => {
+          const windowHeight = window.innerHeight;
+          const revealTop = el.getBoundingClientRect().top;
+          const revealPoint = 150;
+          if (revealTop < windowHeight - revealPoint) {
+            el.classList.add('active');
+          }
         });
         
-        const result = await response.json();
-        
-        if (response.ok) {
-          alert(`✅ تم تأكيد حجزك بنجاح!\n\n📋 تفاصيل الحجز:\n🏝️ الرحلة: ${tourName}\n👥 عدد الأفراد: ${persons}\n💰 السعر الإجمالي: ${totalPrice} ${currency === 'EGP' ? 'جنيه' : '$'}\n\nسنقوم بالتواصل معك قريباً لتأكيد التفاصيل.`);
-          const modal = document.getElementById('bookingModal');
-          if (modal) modal.style.display = 'none';
-          newModalForm.reset();
-        } else {
-          alert('❌ حدث خطأ في تأكيد الحجز: ' + (result.error || 'يرجى المحاولة مرة أخرى'));
-        }
-      } catch(error) {
-        console.error('Booking error:', error);
-        alert('❌ حدث خطأ في الاتصال بالخادم. يرجى التأكد من تشغيل السيرفر والمحاولة مرة أخرى.');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+      } catch (error) {
+        console.error('Error loading tours:', error);
+        container.innerHTML = '<div style="text-align:center; width:100%; padding: 3rem; color: #f44336;"><i class="fas fa-exclamation-triangle"></i> ❌ حدث خطأ في تحميل الجولات. تأكد من تشغيل السيرفر.</div>';
       }
+    }
+
+    // Updated booking modal function to work with tour ID
+    window.openBookingModalWithTour = function(tourId, tourName) {
+      const modal = document.getElementById('bookingModal');
+      if (modal) {
+        document.getElementById('modalTour').value = tourName;
+        document.getElementById('modalTourId').value = tourId;
+        modal.style.display = 'block';
+      }
+    };
+
+    // Setup booking form submission
+    const modalBookingForm = document.getElementById('modalBookingForm');
+    if (modalBookingForm) {
+      modalBookingForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitBtn = modalBookingForm.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'جاري المعالجة...';
+        
+        const nationality = document.getElementById('modalNationality')?.value;
+        const persons = parseInt(document.getElementById('modalPersons')?.value) || 1;
+        const tourName = document.getElementById('modalTour')?.value;
+        const tourId = document.getElementById('modalTourId')?.value;
+        
+        if (!tourId && !tourName) {
+          alert('❌ حدث خطأ: لم يتم تحديد الرحلة');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+          return;
+        }
+        
+        if (!nationality) {
+          alert('❌ الرجاء اختيار الجنسية');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+          return;
+        }
+        
+        let pricePerPerson = nationality === 'egyptian' ? 2500 : 50;
+        let currency = nationality === 'egyptian' ? 'EGP' : 'USD';
+        
+        // Try to get tour price from API
+        try {
+          const res = await fetch('/api/tours');
+          const tours = await res.json();
+          const tour = tours.find(t => t.id === tourId || t.name === tourName);
+          if (tour) {
+            pricePerPerson = nationality === 'egyptian' ? tour.priceEgyptian : tour.priceForeign;
+          }
+        } catch(e) {
+          console.log('Using default prices');
+        }
+        
+        const totalPrice = pricePerPerson * persons;
+        
+        const bookingData = {
+          tourId: tourId,
+          tourName: tourName,
+          name: document.getElementById('modalName').value,
+          email: document.getElementById('modalEmail').value,
+          phone: document.getElementById('modalPhone').value,
+          nationality: nationality,
+          persons: persons,
+          date: document.getElementById('modalDate').value,
+          message: document.getElementById('modalMessage').value || '',
+          totalPrice: totalPrice,
+          currency: currency
+        };
+        
+        // Validate required fields
+        if (!bookingData.name || !bookingData.email || !bookingData.phone || !bookingData.date) {
+          alert('❌ الرجاء تعبئة جميع الحقول المطلوبة');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+          return;
+        }
+        
+        try {
+          const response = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bookingData)
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok) {
+            alert(`✅ تم تأكيد حجزك بنجاح!\n\n📋 تفاصيل الحجز:\n🏝️ الرحلة: ${tourName}\n👥 عدد الأفراد: ${persons}\n💰 السعر الإجمالي: ${totalPrice} ${currency === 'EGP' ? 'جنيه' : '$'}\n\nسنقوم بالتواصل معك قريباً لتأكيد التفاصيل.`);
+            modal.style.display = 'none';
+            modalBookingForm.reset();
+          } else {
+            alert('❌ حدث خطأ في تأكيد الحجز: ' + (result.error || 'يرجى المحاولة مرة أخرى'));
+          }
+        } catch(error) {
+          console.error('Booking error:', error);
+          alert('❌ حدث خطأ في الاتصال بالخادم. يرجى التأكد من تشغيل السيرفر والمحاولة مرة أخرى.');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      });
+    }
+
+    // Load tours when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, loading tours...');
+      loadToursFromAPI();
     });
-  }
-  
-  // Add hidden field for tourId in modal if not exists
-  const modalContentForm = document.querySelector('#bookingModal .modal-content form');
-  if (modalContentForm && !document.getElementById('modalTourId')) {
-    const hiddenInput = document.createElement('input');
-    hiddenInput.type = 'hidden';
-    hiddenInput.id = 'modalTourId';
-    modalContentForm.appendChild(hiddenInput);
-  }
-  
-  // Make sure loadToursFromAPI is called when page loads
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, loading tours...');
-    loadToursFromAPI();
-  });
-  
-  // Also call it immediately in case DOMContentLoaded already fired
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadToursFromAPI);
-  } else {
-    loadToursFromAPI();
-  }
-  
-  // Refresh tours when switching to dark mode doesn't affect tours
-  console.log('Main page script loaded successfully');
+    
+    // Also call it immediately in case DOMContentLoaded already fired
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadToursFromAPI);
+    } else {
+      loadToursFromAPI();
+    }
   </script>
 </body>
 </html>
