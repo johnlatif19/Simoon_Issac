@@ -1120,9 +1120,8 @@
   <section id="tours" class="tours">
     <div class="container">
       <h2 class="section-title reveal" data-key="tours_title">الجولات السياحية</h2>
-      <div class="tours-grid">
-        <div class="tour-card reveal"><div class="tour-image"><img src="https://i.postimg.cc/4dWVP5tg/GEM.jpg" alt="المتحف المصري الكبير - الأهرامات"><div class="tour-badge">الأكثر طلباً</div></div><div class="tour-info"><h3 data-key="tour1_title">جولة المتحف المصري الكبير</h3><p data-key="tour1_desc">استكشف عجائب الدنيا السبع القديمة</p><div class="tour-details"><span><i class="fas fa-clock"></i> <span data-key="tour1_duration">4 ساعات</span></span><span><i class="fas fa-users"></i> <span data-key="tour1_group">2-10 أشخاص</span></span><span><i class="fas fa-dollar-sign"></i> <span data-key="tour1_price">50$</span></span></div><button class="book-btn" onclick="openBookingModal('جولة المتحف المصري الكبير')" data-key="book_btn">احجز الآن</button></div></div>
-        <div class="tour-card reveal"><div class="tour-image"><img src="https://i.postimg.cc/hjS7TCDB/nhr-alnyl.jpg" alt="رحلة النيل - مركب تقليدي"><div class="tour-badge">عرض خاص</div></div><div class="tour-info"><h3 data-key="tour2_title">رحلة النيل</h3><p data-key="tour2_desc">عشاء رومانسي على ظهر مركب تقليدي</p><div class="tour-details"><span><i class="fas fa-clock"></i> <span data-key="tour2_duration">3 ساعات</span></span><span><i class="fas fa-users"></i> <span data-key="tour2_group">2-15 أشخاص</span></span><span><i class="fas fa-dollar-sign"></i> <span data-key="tour2_price">75$</span></span></div><button class="book-btn" onclick="openBookingModal('رحلة النيل')" data-key="book_btn">احجز الآن</button></div></div>
+      <div id="toursContainer" class="tours-grid">
+        <div style="text-align:center; width:100%;"><i class="fas fa-spinner fa-spin"></i> جاري تحميل الجولات...</div>
       </div>
     </div>
   </section>
@@ -1280,6 +1279,139 @@
 
     // Smooth Scroll for all anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) target.scrollIntoView({ behavior: 'smooth' }); }); });
+    // ============= LOAD TOURS FROM API =============
+  async function loadToursFromAPI() {
+    const container = document.getElementById('toursContainer');
+    if (!container) return;
+    
+    try {
+      const response = await fetch('/api/tours');
+      const tours = await response.json();
+      
+      if (tours.length === 0) {
+        container.innerHTML = '<div style="text-align:center; width:100%;">📭 لا توجد جولات حالياً، سيتم إضافتها قريباً</div>';
+        return;
+      }
+      
+      container.innerHTML = tours.map(tour => `
+        <div class="tour-card reveal">
+          <div class="tour-image">
+            <img src="${tour.image}" alt="${tour.name}" loading="lazy">
+            <div class="tour-badge">${tour.days} أيام</div>
+          </div>
+          <div class="tour-info">
+            <h3>${tour.name}</h3>
+            <p>${tour.description.substring(0, 80)}${tour.description.length > 80 ? '...' : ''}</p>
+            <div class="tour-details">
+              <span><i class="fas fa-calendar-week"></i> ${tour.days} أيام</span>
+              <span><i class="fas fa-users"></i> جولات جماعية</span>
+            </div>
+            <div class="tour-details">
+              <span><i class="fas fa-dollar-sign"></i> الأجنبي: ${tour.priceForeign}$</span>
+              <span><i class="fas fa-pound-sign"></i> المصري: ${tour.priceEgyptian} جنيه</span>
+            </div>
+            <button class="book-btn" onclick="openBookingModalWithTour('${tour.id}', '${tour.name.replace(/'/g, "\\'")}')" data-key="book_btn">احجز الآن</button>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (error) {
+      console.error('Error loading tours:', error);
+      container.innerHTML = '<div style="text-align:center; width:100%;">❌ حدث خطأ في تحميل الجولات</div>';
+    }
+  }
+  
+  // Updated booking modal function to work with tour ID
+  window.openBookingModalWithTour = function(tourId, tourName) {
+    const modal = document.getElementById('bookingModal');
+    if (modal) {
+      document.getElementById('modalTour').value = tourName;
+      document.getElementById('modalTourId').value = tourId;
+      modal.style.display = 'block';
+    }
+  };
+  
+  // Update booking form submission to send tourId
+  const originalModalSubmit = modalBookingForm?.submit;
+  if (modalBookingForm) {
+    modalBookingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nationality = document.getElementById('modalNationality')?.value;
+      const persons = parseInt(document.getElementById('modalPersons')?.value) || 1;
+      const tourName = document.getElementById('modalTour')?.value;
+      const tourId = document.getElementById('modalTourId')?.value;
+      
+      // Get prices from API or use default
+      let pricePerPerson = nationality === 'egyptian' ? 2500 : 50;
+      let currency = nationality === 'egyptian' ? 'EGP' : 'USD';
+      
+      // Try to get tour price from loaded tours
+      try {
+        const res = await fetch('/api/tours');
+        const tours = await res.json();
+        const tour = tours.find(t => t.id === tourId || t.name === tourName);
+        if (tour) {
+          pricePerPerson = nationality === 'egyptian' ? tour.priceEgyptian : tour.priceForeign;
+        }
+      } catch(e) { console.log('Using default prices'); }
+      
+      const totalPrice = pricePerPerson * persons;
+      
+      const bookingData = {
+        tourId: tourId,
+        tourName: tourName,
+        name: document.getElementById('modalName').value,
+        email: document.getElementById('modalEmail').value,
+        phone: document.getElementById('modalPhone').value,
+        nationality: nationality,
+        persons: persons,
+        date: document.getElementById('modalDate').value,
+        message: document.getElementById('modalMessage').value || '',
+        totalPrice: totalPrice,
+        currency: currency
+      };
+      
+      try {
+        const response = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bookingData)
+        });
+        
+        if (response.ok) {
+          alert(`✅ تم تأكيد حجزك! السعر الإجمالي: ${totalPrice} ${currency === 'EGP' ? 'جنيه' : '$'}`);
+          modal.style.display = 'none';
+          modalBookingForm.reset();
+        } else {
+          alert('❌ حدث خطأ في تأكيد الحجز');
+        }
+      } catch(error) {
+        console.error('Booking error:', error);
+        alert('❌ حدث خطأ في الاتصال بالخادم');
+      }
+    });
+  }
+  
+  // Add hidden field for tourId in modal
+  const modalForm = document.querySelector('#bookingForm');
+  if (modalForm) {
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.id = 'modalTourId';
+    modalForm.appendChild(hiddenInput);
+  } else {
+    // Add to modal content
+    const modalContent = document.querySelector('#bookingModal .modal-content form');
+    if (modalContent && !document.getElementById('modalTourId')) {
+      const hiddenInput = document.createElement('input');
+      hiddenInput.type = 'hidden';
+      hiddenInput.id = 'modalTourId';
+      modalContent.appendChild(hiddenInput);
+    }
+  }
+  
+  // Load tours when page loads
+  loadToursFromAPI();
   </script>
 </body>
 </html>
